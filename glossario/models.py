@@ -2,9 +2,18 @@ from django.db import models
 
 
 class Termo(models.Model):
-    titulo = models.CharField(max_length=255)
+    titulo = models.CharField("Sigla ou palavra", max_length=255)
     slug = models.SlugField(unique=True)
-    descricao = models.TextField(blank=True)
+    decod_en = models.CharField(
+        "Decodificação em inglês", max_length=255, blank=True
+    )
+    decod_pt = models.CharField(
+        "Decodificação em português", max_length=255, blank=True
+    )
+    explicacao = models.TextField(blank=True)
+    fotos = models.JSONField(blank=True, default=list)
+    videos = models.JSONField(blank=True, default=list)
+    links = models.JSONField(blank=True, default=list)
 
     class Meta:
         ordering = ["titulo"]

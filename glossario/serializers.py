@@ -5,4 +5,14 @@ from .models import Termo
 class TermoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Termo
-        fields = ["id", "titulo", "slug", "descricao"]
+        fields = [
+            "id",
+            "titulo",
+            "slug",
+            "decod_en",
+            "decod_pt",
+            "explicacao",
+            "fotos",
+            "videos",
+            "links",
+        ]

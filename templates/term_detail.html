@@ -3,7 +3,9 @@
 {% block content %}
 <article>
   <h1 class="mb-3">{{ term.titulo }}</h1>
-  <p class="lead">{{ term.definicao }}</p>
+  {% if term.decod_en %}<p><strong>Decodificação (EN):</strong> {{ term.decod_en }}</p>{% endif %}
+  {% if term.decod_pt %}<p><strong>Decodificação (PT):</strong> {{ term.decod_pt }}</p>{% endif %}
+  <p class="lead">{{ term.explicacao }}</p>
   <a href="/" class="btn btn-secondary">Voltar</a>
 </article>
 {% endblock %}
