@@ -1,7 +1,50 @@
 {% extends 'base.html' %}
 {% block title %}{{ termo.titulo }} - Aerodicionário{% endblock %}
 {% block content %}
-<h1>{{ termo.titulo }}</h1>
-<p>{{ termo.descricao }}</p>
-<a href="{% url 'glossario:lista_termos' %}">Voltar</a>
+<article class="mb-4">
+  <h1 class="mb-3">{{ termo.titulo }}</h1>
+  <div class="mb-3">
+    {% if termo.decod_en %}<p><strong>Decodificação (EN):</strong> {{ termo.decod_en }}</p>{% endif %}
+    {% if termo.decod_pt %}<p><strong>Decodificação (PT):</strong> {{ termo.decod_pt }}</p>{% endif %}
+  </div>
+  {% if termo.explicacao %}
+  <p class="lead">{{ termo.explicacao }}</p>
+  {% endif %}
+  {% if termo.fotos %}
+  <div id="fotosCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for foto in termo.fotos %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ foto }}" class="d-block w-100 img-fluid" alt="Foto {{ forloop.counter }}">
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#fotosCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#fotosCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
+  </div>
+  {% endif %}
+  {% if termo.videos %}
+  <div class="mb-4">
+    {% for video in termo.videos %}
+    <div class="ratio ratio-16x9 mb-3">
+      <iframe src="{{ video }}" allowfullscreen></iframe>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if termo.links %}
+  <ul class="list-group mb-4">
+    {% for link in termo.links %}
+    <li class="list-group-item"><a href="{{ link }}" target="_blank" rel="noopener">{{ link }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <a href="{% url 'glossario:lista_termos' %}" class="btn btn-secondary">Voltar</a>
+</article>
 {% endblock %}

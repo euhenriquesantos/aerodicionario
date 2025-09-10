@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
 
@@ -9,7 +10,11 @@ def lista_termos(request):
     busca = request.GET.get("q", "")
     termos = Termo.objects.all()
     if busca:
-        termos = termos.filter(titulo__icontains=busca)
+        termos = termos.filter(
+            Q(titulo__icontains=busca)
+            | Q(decod_en__icontains=busca)
+            | Q(decod_pt__icontains=busca)
+        )
     context = {"termos": termos, "busca": busca}
     return render(request, "glossario/lista.html", context)
 
@@ -26,7 +31,11 @@ class TermoListAPI(generics.ListAPIView):
         busca = self.request.query_params.get("q", "")
         qs = Termo.objects.all()
         if busca:
-            qs = qs.filter(titulo__icontains=busca)
+            qs = qs.filter(
+                Q(titulo__icontains=busca)
+                | Q(decod_en__icontains=busca)
+                | Q(decod_pt__icontains=busca)
+            )
         return qs
 
 
