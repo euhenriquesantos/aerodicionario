@@ -1,3 +1,4 @@
+ codex/create-glossary-views-and-routes
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
 
@@ -34,3 +35,8 @@ class TermoDetailAPI(generics.RetrieveAPIView):
     queryset = Termo.objects.all()
     serializer_class = TermoSerializer
     lookup_field = "slug"
+
+from django.shortcuts import render
+
+# Create your views here.
+ main
