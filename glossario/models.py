@@ -1,5 +1,6 @@
 from django.db import models
 
+codex/add-termo-class-to-glossario-model
 
 class Termo(models.Model):
     """Representa um termo do glossário."""
@@ -10,3 +11,6 @@ class Termo(models.Model):
 
     def __str__(self) -> str:  # pragma: no cover - simple human-readable repr
         return self.titulo
+=======
+# Create your models here.
+main
