@@ -1,9 +1,24 @@
 __pycache__/
+ codex/create-glossary-views-and-routes
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+.env
+venv/
+ENV/
+.Python
+build/
+dist/
+*.egg-info/
+
 codex/enable-django-admin-in-urls.py
 *.pyc
 db.sqlite3
-=======
+
 db.sqlite3
 *.py[cod]
 
+main
 main

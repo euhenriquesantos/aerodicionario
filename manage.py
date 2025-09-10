@@ -6,6 +6,9 @@ import sys
 
 def main():
     """Run administrative tasks."""
+ codex/create-glossary-views-and-routes
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
  codex/enable-django-admin-in-urls.py
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
@@ -14,6 +17,7 @@ codex/add-termo-class-to-glossario-model
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "aerodicionario.settings")
 main
+ main
  main
     try:
         from django.core.management import execute_from_command_line
