@@ -1,11 +1,61 @@
 {% extends 'base.html' %}
-{% block title %}Aerodicionário{% endblock %}
+{% load static %}
+{% block title %}Aerodicionário - Glossário de Termos de Aviação{% endblock %}
+{% block meta_description %}Dicionário da aviação com definições de siglas e termos aeronáuticos em português. Descubra rapidamente significados e amplie seu vocabulário aéreo.{% endblock %}
 {% block content %}
-<div class="p-5 mb-4 bg-light rounded-3">
-  <div class="container-fluid py-5">
-    <h1 class="display-5 fw-bold">Bem-vindo ao Aerodicionário</h1>
-    <p class="col-md-8 fs-4">Explore termos e siglas da aviação em nosso dicionário interativo.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'glossario:lista_termos' %}">Acessar Dicionário</a>
+<section class="py-5 text-center bg-light">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Seu guia de termos e siglas da aviação</h1>
+    <p class="lead">Da cabine de comando ao solo, descubra a linguagem que move o céu.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'glossario:lista_termos' %}">Consultar Dicionário</a>
   </div>
-</div>
+</section>
+
+<section id="sobre" class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2>Sobre o Aerodicionário</h2>
+        <p>O Aerodicionário reúne definições claras e objetivas para estudantes, entusiastas e profissionais do setor aéreo.</p>
+        <p>Nosso objetivo é facilitar o aprendizado com conteúdo confiável e atualizado continuamente.</p>
+      </div>
+      <div class="col-md-6">
+        <img src="{% static 'img/airplane-illustration.svg' %}" alt="Ilustração de avião" class="img-fluid">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recursos" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Por que usar o Aerodicionário?</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="h-100 p-4 border rounded">
+          <h3 class="h5">Conteúdo atualizado</h3>
+          <p>Mantemos nosso banco de dados em constante expansão com os termos mais recentes do setor.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="h-100 p-4 border rounded">
+          <h3 class="h5">Busca rápida</h3>
+          <p>Encontre qualquer expressão em segundos usando a pesquisa do dicionário.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="h-100 p-4 border rounded">
+          <h3 class="h5">Acesso gratuito</h3>
+          <p>Consulte o conteúdo de onde estiver sem custos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" class="py-5">
+  <div class="container text-center">
+    <h2>Entre em contato</h2>
+    <p>Tem alguma sugestão ou correção? Envie um e-mail para <a href="mailto:contato@aerodicionario.example">contato@aerodicionario.example</a>.</p>
+  </div>
+</section>
 {% endblock %}
