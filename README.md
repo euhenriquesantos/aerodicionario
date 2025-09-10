@@ -1,6 +1,7 @@
 # aerodicionario
 Dicionário da Aviação
 
+ codex/configure-authentication-middleware
 ## Autenticação e autorização
 A aplicação usa sessões do Express para controlar o acesso. O login cria uma sessão que guarda o usuário autenticado e seu perfil.
 
@@ -37,3 +38,14 @@ Execute os testes:
 ```bash
 npm test
 ```
+
+## Admin
+
+Para acessar o painel administrativo do Django:
+
+1. Execute o servidor com `python manage.py runserver`.
+2. Acesse `http://localhost:8000/admin/` no navegador.
+3. Entre com as credenciais:
+   - Usuário: `admin`
+   - Senha: `admin123`
+ main

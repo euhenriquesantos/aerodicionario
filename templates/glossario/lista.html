@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Termos - Aerodicionário{% endblock %}
+{% block content %}
+<h1>Termos</h1>
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Buscar termo" value="{{ busca }}">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+</form>
+<ul class="list-group">
+    {% for termo in termos %}
+        <li class="list-group-item">
+            <a href="{% url 'glossario:detalhes_termo' termo.slug %}">{{ termo.titulo }}</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Nenhum termo encontrado.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
