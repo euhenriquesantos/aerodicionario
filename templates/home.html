@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Aerodicionário{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">Bem-vindo ao Aerodicionário</h1>
+    <p class="col-md-8 fs-4">Explore termos e siglas da aviação em nosso dicionário interativo.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'glossario:lista_termos' %}">Acessar Dicionário</a>
+  </div>
+</div>
+{% endblock %}

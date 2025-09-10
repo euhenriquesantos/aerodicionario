@@ -6,6 +6,11 @@ from .models import Termo
 from .serializers import TermoSerializer
 
 
+def home(request):
+    """Landing page for the project."""
+    return render(request, "home.html")
+
+
 def lista_termos(request):
     busca = request.GET.get("q", "")
     termos = Termo.objects.all()
