@@ -1,3 +1,6 @@
+ codex/configure-authentication-middleware
+node_modules/
+
 __pycache__/
  codex/create-glossary-views-and-routes
 *.pyc
@@ -22,3 +25,4 @@ db.sqlite3
 
 main
 main
+ main
