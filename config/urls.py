@@ -2,7 +2,11 @@
 URL configuration for config project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
+ codex/enable-django-admin-in-urls.py
+    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
+ main
 Examples:
 Function views
     1. Add an import:  from my_app import views
