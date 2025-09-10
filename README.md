@@ -1,51 +1,71 @@
-# aerodicionario
-Dicionário da Aviação
+# Aerodicionário
 
- codex/configure-authentication-middleware
-## Autenticação e autorização
-A aplicação usa sessões do Express para controlar o acesso. O login cria uma sessão que guarda o usuário autenticado e seu perfil.
+Aplicação de demonstração que combina dois ambientes:
 
-Usuários padrão:
-- `admin` / `adminpass` (administrador)
-- `user` / `userpass` (usuário comum)
+- **Express/Node.js** responsável por autenticação de usuários e rotas protegidas.
+- **Django** com um pequeno glossário de termos de aviação e painel administrativo.
 
-### Login
-`POST /login` com JSON `{ "username": "...", "password": "..." }` inicia a sessão.
+## Requisitos
 
-### Logout
-`POST /logout` encerra a sessão atual.
+- [Node.js](https://nodejs.org/) 20+
+- [Python](https://www.python.org/) 3.11+
+- `npm` e `pip`
+- (Opcional) [VS Code](https://code.visualstudio.com/) com as extensões *Python* e *JavaScript/TypeScript*.
 
-### Reset de senha
-Usuários autenticados podem enviar `POST /reset-password` com `{ "newPassword": "..." }` para alterar a própria senha.
-
-### Rotas restritas
-As rotas de criação e edição de itens são protegidas e só podem ser acessadas por administradores:
-- `POST /items`
-- `PUT /items/:id`
-
-Requisições de usuários sem permissão resultam em `403 Forbidden`.
-
-### Execução
-Instale as dependências e inicie o servidor:
+## Executando o servidor Express
 
 ```bash
 npm install
 npm start
 ```
 
-Execute os testes:
+Usuários padrão:
+
+- `admin` / `adminpass` (administrador)
+- `user` / `userpass` (usuário comum)
+
+Testes do Express:
 
 ```bash
 npm test
 ```
 
-## Admin
+## Executando o projeto Django
 
-Para acessar o painel administrativo do Django:
+Crie um ambiente virtual (recomendado) e instale as dependências:
 
-1. Execute o servidor com `python manage.py runserver`.
-2. Acesse `http://localhost:8000/admin/` no navegador.
-3. Entre com as credenciais:
-   - Usuário: `admin`
-   - Senha: `admin123`
- main
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Inicialize o banco de dados e rode o servidor de desenvolvimento:
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+
+Para acessar o painel administrativo vá em `http://localhost:8000/admin/`.
+Crie um superusuário com:
+
+```bash
+python manage.py createsuperuser
+```
+
+Testes do Django (nenhum teste ainda, mas o comando verifica a configuração):
+
+```bash
+python manage.py test
+```
+
+## Dicas para VS Code
+
+1. Abra a pasta do projeto no VS Code.
+2. Use o terminal integrado para executar os comandos acima.
+3. Para depurar, utilize as configurações padrão de *Node.js* ou *Django* disponíveis no VS Code.
+
+## Licença
+
+Projeto de demonstração para fins educacionais.
