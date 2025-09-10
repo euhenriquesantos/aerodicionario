@@ -1,0 +1,21 @@
+{
+  "name": "aerodicionario",
+  "version": "1.0.0",
+  "description": "Dicionário da Aviação",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
+  }
+}
