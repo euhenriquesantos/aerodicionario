@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ term.titulo }} - Aerodicionário{% endblock %}
+{% block content %}
+<article>
+  <h1 class="mb-3">{{ term.titulo }}</h1>
+  <p class="lead">{{ term.definicao }}</p>
+  <a href="/" class="btn btn-secondary">Voltar</a>
+</article>
+{% endblock %}

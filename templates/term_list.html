@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Termos - Aerodicionário{% endblock %}
+{% block content %}
+<h1 class="mb-4">Termos</h1>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for term in terms %}
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-body d-flex flex-column">
+        <h2 class="h5 card-title">{{ term.titulo }}</h2>
+        <p class="card-text flex-grow-1">{{ term.descricao }}</p>
+        <a href="{{ term.url }}" class="btn btn-primary mt-3">Detalhes</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
