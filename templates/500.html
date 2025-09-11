@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Erro interno - Aerodicionário{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="display-5 mb-3">Ops! Algo deu errado.</h1>
+  <p class="lead">Tivemos um problema ao processar sua solicitação. Tente novamente em instantes.</p>
+  <a class="btn btn-primary" href="/">Voltar para a página inicial</a>
+  <a class="btn btn-outline-primary ms-2" href="{% url 'glossario:lista_termos' %}">Ir para o Dicionário</a>
+</div>
+{% endblock %}
+

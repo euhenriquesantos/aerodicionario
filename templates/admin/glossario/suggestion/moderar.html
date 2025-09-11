@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="module" style="border-radius:12px; padding:16px;">
+  <h2 class="h5">Moderar sugestão</h2>
+  <p><strong>Usuário:</strong> {{ sug.user }} | <strong>Tipo:</strong> {{ sug.get_change_type_display }} | <strong>Enviada em:</strong> {{ sug.created_at|date:'d/m/Y H:i' }}</p>
+  {% if sug.termo %}
+  <p><strong>Para o termo:</strong> <a href="{% url 'admin:glossario_termo_change' sug.termo.pk %}">{{ sug.termo.titulo }}</a></p>
+  {% endif %}
+  {% if sug.justification %}<p><em>Justificativa:</em> {{ sug.justification }}</p>{% endif %}
+
+  <div class="row">
+    <div class="col-6">
+      <h3 class="h6">Atual</h3>
+      {% if sug.termo %}
+      <dl>
+        <dt>EN</dt><dd>{{ sug.termo.decod_en|default:'—' }}</dd>
+        <dt>PT</dt><dd>{{ sug.termo.decod_pt|default:'—' }}</dd>
+        <dt>Explicação</dt><dd>{{ sug.termo.explicacao|default:'—' }}</dd>
+      </dl>
+      {% else %}
+      <p class="text-muted">Novo termo</p>
+      {% endif %}
+    </div>
+    <div class="col-6">
+      <h3 class="h6">Sugestão</h3>
+      <dl>
+        <dt>Título</dt><dd>{{ sug.titulo|default:'—' }}</dd>
+        <dt>EN</dt><dd>{{ sug.decod_en|default:'—' }}</dd>
+        <dt>PT</dt><dd>{{ sug.decod_pt|default:'—' }}</dd>
+        <dt>Explicação</dt><dd>{{ sug.explicacao|default:'—' }}</dd>
+        <dt>Imagens</dt><dd>{{ sug.imagens.count }} arquivo(s)</dd>
+        <dt>Links</dt><dd>{{ sug.links.count }} link(s)</dd>
+        <dt>Vídeos</dt><dd>{{ sug.videos.count }} vídeo(s)</dd>
+      </dl>
+    </div>
+  </div>
+
+  <form method="post" class="mt-3">
+    {% csrf_token %}
+    <button class="button default" name="action" value="approve" type="submit">Aprovar e aplicar</button>
+    <button class="button" name="action" value="reject" type="submit">Rejeitar</button>
+  </form>
+</div>
+{% endblock %}
+

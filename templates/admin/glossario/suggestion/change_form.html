@@ -1,0 +1,30 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block after_related_objects %}
+  {{ block.super }}
+  {% if original %}
+  <div class="module" style="margin-top:16px; border-radius:12px; padding:12px 16px;">
+    <h2 class="h5">Comparação rápida</h2>
+    <div class="row">
+      <div class="col-6">
+        <h3 class="h6">Atual no termo</h3>
+        <dl>
+          <dt>EN</dt><dd>{{ original.termo.decod_en|default:'—' }}</dd>
+          <dt>PT</dt><dd>{{ original.termo.decod_pt|default:'—' }}</dd>
+          <dt>Explicação</dt><dd>{{ original.termo.explicacao|default:'—' }}</dd>
+        </dl>
+      </div>
+      <div class="col-6">
+        <h3 class="h6">Sugerido</h3>
+        <dl>
+          <dt>EN</dt><dd>{{ original.decod_en|default:'—' }}</dd>
+          <dt>PT</dt><dd>{{ original.decod_pt|default:'—' }}</dd>
+          <dt>Explicação</dt><dd>{{ original.explicacao|default:'—' }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+

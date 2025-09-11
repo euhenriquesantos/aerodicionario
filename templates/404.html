@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Página não encontrada - Aerodicionário{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="display-5 mb-3">Página não encontrada</h1>
+  <p class="lead">A página que você tentou acessar não existe ou foi movida.</p>
+  <a class="btn btn-primary" href="/">Voltar para a página inicial</a>
+  <a class="btn btn-outline-primary ms-2" href="{% url 'glossario:lista_termos' %}">Ir para o Dicionário</a>
+  </div>
+{% endblock %}
+

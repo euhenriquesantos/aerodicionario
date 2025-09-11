@@ -1,0 +1,167 @@
+/* Aerodicionário – tema moderno sobre Bootstrap 5 */
+
+:root {
+  --brand-50: #eef7ff;
+  --brand-100: #d9edff;
+  --brand-200: #bfe0ff;
+  --brand-300: #93cdff;
+  --brand-400: #5ab1ff;
+  --brand-500: #2a93ff;
+  --brand-600: #0e76e6;
+  --brand-700: #065ec0;
+  --brand-800: #084f99;
+  --brand-900: #0b457e;
+
+  --bg-soft: radial-gradient(1000px 600px at 0% 0%, #f8fbff 0%, #ffffff 50%),
+             radial-gradient(800px 500px at 100% 100%, #f6f9ff 0%, #ffffff 60%);
+}
+
+/* Tipografia moderna */
+html, body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg-soft);
+}
+
+/* Navbar clara e discreta */
+.site-header .navbar { background: #fff !important; }
+.site-header .navbar .nav-link { color: #334155; }
+.site-header .navbar .nav-link:hover { color: var(--brand-700); }
+.navbar .navbar-brand span {
+  letter-spacing: 0.2px;
+}
+
+.brand-logo { object-fit: contain; border-radius: 6px; width: 48px; height: 48px; }
+@media (min-width: 992px) { .brand-logo { width: 56px; height: 56px; } }
+
+/* Navegação do alfabeto */
+.alphabet-wrap { padding: .25rem 0; }
+.alphabet-wrap .btn { border-radius: 999px; }
+
+/* Footer discreto */
+.site-footer {
+  background: #f8f9fa;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+
+/* Botões primários refinados */
+.btn-primary {
+  background-color: var(--brand-600);
+  border-color: var(--brand-600);
+  box-shadow: 0 6px 18px rgba(10, 95, 200, 0.18);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-700);
+  border-color: var(--brand-700);
+}
+
+.btn-outline-primary {
+  color: var(--brand-700);
+  border-color: var(--brand-300);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--brand-50);
+  border-color: var(--brand-500);
+}
+
+/* Cartões com efeito leve e hover */
+.card {
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(16, 24, 40, .06);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  transition: transform .2s ease, box-shadow .2s ease;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, .10);
+}
+
+/* Campos de busca – pill + ícone opcional */
+.search-hero {
+  background: linear-gradient(145deg, #ffffff, #f3f7ff);
+  border: 1px solid rgba(15, 23, 42, .06);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, .06);
+}
+
+.input-group.search-lg .form-control {
+  padding: 0.9rem 1.1rem;
+  border-radius: 999px 0 0 999px !important;
+  border: 1px solid rgba(15, 23, 42, .08);
+  min-width: 0;
+}
+
+.input-group.search-lg .btn {
+  border-radius: 0 999px 999px 0 !important;
+}
+
+.input-group.search-lg { width: 100%; }
+
+/* Títulos e subtítulos */
+.display-hero {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  color: #4b5563;
+}
+
+/* Utilitários pequenos */
+.text-gradient {
+  background: linear-gradient(135deg, var(--brand-700), var(--brand-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.badge-soft {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  border: 1px solid var(--brand-100);
+  padding: .45rem .7rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Carrossel bordas suaves */
+.carousel .carousel-item img {
+  border-radius: 12px;
+  max-height: 420px;
+  width: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+@media (max-width: 768px) {
+  .carousel .carousel-item img { max-height: 300px; }
+}
+
+/* Mídia embutida (vídeos/imagens) */
+.media-embed {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(16,24,40,.08);
+}
+
+.section-title { font-weight: 600; margin-bottom: .75rem; }
+
+/* Subnav dentro do detalhe */
+.subnav a {
+  color: #475569;
+  text-decoration: none;
+  padding: .35rem .6rem;
+  border-radius: 8px;
+}
+.subnav a:hover { background: #eef2ff; color: var(--brand-700); }
+
+.lead-wide { max-width: 70ch; }
+
+/* Dark mode removido por ora para manter aparência clara consistente */

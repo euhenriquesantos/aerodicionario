@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block title %}Administração | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+ 
+  <nav class="admin-topnav">
+    <a href="{% url 'admin:glossario_termo_changelist' %}">Termos</a>
+    <a href="{% url 'admin:glossario_suggestion_changelist' %}">Sugestões</a>
+    <a href="{% url 'admin:glossario_suggestionapplicationlog_changelist' %}">Logs</a>
+    <a href="{% url 'admin:glossario_sitesetting_changelist' %}">Configurações</a>
+    <a href="{% url 'admin:auth_user_changelist' %}">Usuários</a>
+    <a href="/" target="_blank">Ver o site ↗︎</a>
+  </nav>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script defer src="{% static 'js/admin.js' %}"></script>
+  <script>
+    (function(){
+      try {
+        // Força tema claro independentemente das preferências do SO
+        document.documentElement.setAttribute('data-theme', 'light');
+        // Evita toggles futuros do próprio admin
+        localStorage.setItem('django.admin.theme', 'light');
+        localStorage.setItem('adminTheme', 'light');
+        localStorage.setItem('theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+{% endblock %}

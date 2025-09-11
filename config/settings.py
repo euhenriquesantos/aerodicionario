@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "rest_framework",
     "glossario",
 ]
@@ -44,7 +45,14 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "glossario.context_processors.site_settings",
             ],
+            # Registro explícito de bibliotecas de template personalizadas
+            "libraries": {
+                "dashboard_stats": "glossario.templatetags.dashboard_stats",
+                "utils": "glossario.templatetags.utils",
+                "highlight": "glossario.templatetags.highlight",
+            },
         },
     },
 ]
@@ -73,11 +81,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

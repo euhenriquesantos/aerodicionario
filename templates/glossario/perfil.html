@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Minha conta - Aerodicionário{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Meus dados</h2>
+          <div class="mb-3 small text-muted">
+            Último login: {{ user_obj.last_login|date:'d/m/Y H:i' }}
+          </div>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <div class="mb-3">{{ form.username.label_tag }} {{ form.username }}</div>
+            <div class="mb-3">{{ form.first_name.label_tag }} {{ form.first_name }}</div>
+            <div class="mb-3">{{ form.last_name.label_tag }} {{ form.last_name }}</div>
+            <div class="mb-3">{{ form.email.label_tag }} {{ form.email }}</div>
+            <button class="btn btn-primary" type="submit">Salvar</button>
+            <a class="btn btn-outline-secondary ms-2" href="{% url 'password_change' %}">Alterar senha</a>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Minhas sugestões</h2>
+          {% if sugestoes %}
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Termo</th>
+                  <th>Título sugerido</th>
+                  <th>Status</th>
+                  <th>Enviada em</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for s in sugestoes %}
+                <tr>
+                  <td>{% if s.termo %}<a href="{% url 'glossario:detalhes_termo' s.termo.slug %}">{{ s.termo.titulo }}</a>{% else %}-{% endif %}</td>
+                  <td>{{ s.titulo|default:'—' }}</td>
+                  <td>
+                    {% if s.status == 'pending' %}<span class="badge bg-warning-subtle text-warning-emphasis">Pendente</span>{% endif %}
+                    {% if s.status == 'approved' %}<span class="badge bg-success-subtle text-success-emphasis">Aprovada</span>{% endif %}
+                    {% if s.status == 'rejected' %}<span class="badge bg-danger-subtle text-danger-emphasis">Rejeitada</span>{% endif %}
+                  </td>
+                  <td>{{ s.created_at|date:'d/m/Y H:i' }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+            <p class="text-muted mb-0">Você ainda não enviou nenhuma sugestão.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

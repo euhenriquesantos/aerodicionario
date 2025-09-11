@@ -1,0 +1,1 @@
+{{ site_settings.robots_txt|default:'User-agent: *\nAllow: /\nSitemap: /sitemap.xml' }}

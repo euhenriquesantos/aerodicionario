@@ -4,16 +4,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Aerodicionário{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}Glossário de termos e siglas da aviação para estudantes e profissionais do setor aéreo.{% endblock %}">
+  <title>{% block title %}{{ site_settings.site_name|default:'Aerodicionário' }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site_settings.default_meta_description|default:'Glossário de termos e siglas da aviação para estudantes e profissionais do setor aéreo.' }}{% endblock %}">
   <meta name="keywords" content="aviação, dicionário, glossário, termos aeronáuticos, siglas aéreas">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="{% block og_title %}Aerodicionário{% endblock %}">
-  <meta property="og:description" content="{% block og_description %}Glossário de termos e siglas da aviação para estudantes e profissionais do setor aéreo.{% endblock %}">
+  <meta name="robots" content="{% if site_settings.enable_indexing %}index, follow{% else %}noindex, nofollow{% endif %}">
+  <meta property="og:title" content="{% block og_title %}{{ site_settings.site_name|default:'Aerodicionário' }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ site_settings.default_meta_description|default:'Glossário de termos e siglas da aviação para estudantes e profissionais do setor aéreo.' }}{% endblock %}">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="{{ request.scheme|default:'http' }}://{{ request.get_host|default:'' }}{% static 'img/logo.png' %}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Logotipo Aerodicionário">
   <meta property="og:url" content="{{ request.build_absolute_uri|default:'' }}">
   <link rel="canonical" href="{{ request.build_absolute_uri|default:'' }}">
+  {% if site_settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ site_settings.favicon.url }}">
+    <link rel="apple-touch-icon" href="{{ site_settings.favicon.url }}">
+  {% else %}
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/logo.png' %}">
+  {% endif %}
+  <style>
+    :root{
+      --brand-600: {{ site_settings.primary_color|default:'#0e76e6' }};
+      --brand-700: {{ site_settings.secondary_color|default:'#065ec0' }};
+    }
+    {{ site_settings.custom_css|safe }}
+  </style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="{% static 'css/app.css' %}" rel="stylesheet">
+  <script defer src="{% static 'js/autocomplete.js' %}"></script>
+  <script defer src="{% static 'js/lightbox.js' %}"></script>
+  {% if site_settings.analytics_code %}{{ site_settings.analytics_code|safe }}{% endif %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -30,12 +52,15 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="Menu principal">
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom" aria-label="Menu principal">
       <div class="container">
           <a class="navbar-brand d-flex align-items-center" href="/">
-          <img src="{% static 'img/logo.svg' %}" alt="Logotipo Aerodicionário" width="40" height="40" class="me-2">
-          <span class="fw-bold">Aerodicionário</span>
+          {% if site_settings.site_logo %}
+            <img src="{{ site_settings.site_logo.url }}" alt="{{ site_settings.site_name|default:'Logotipo' }}" width="56" height="56" class="me-2 brand-logo">
+          {% else %}
+            <img src="{% static 'img/logo.png' %}" alt="Logotipo Aerodicionário" width="56" height="56" class="me-2 brand-logo">
+          {% endif %}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir menu">
@@ -46,21 +71,45 @@
             <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'glossario:lista_termos' %}">Dicionário</a></li>
             <li class="nav-item"><a class="nav-link" href="/#sobre">Sobre</a></li>
-            <li class="nav-item"><a class="nav-link" href="/#contato">Contato</a></li>
-            <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+            {% if request.user.is_authenticated %}
+              {% if request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'glossario:perfil' %}">Minha conta</a></li>
+              {% endif %}
+              {% if request.user.is_staff %}
+                <li class="nav-item"><a class="nav-link" href="/admin/">Administração</a></li>
+              {% endif %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Entrar</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'glossario:signup' %}">Cadastrar</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
     </nav>
   </header>
+  {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
   <main class="flex-grow-1 py-4">
     <div class="container">
       {% block content %}{% endblock %}
     </div>
   </main>
-  <footer class="bg-dark text-white text-center py-3 mt-auto">
-    <div class="container">
-      <small>&copy; 2023 Aerodicionário</small>
+  <footer class="site-footer mt-auto">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 py-4">
+      <small class="text-body-secondary">&copy; {{ now|date:'Y' }} Aerodicionário</small>
+      <div class="d-flex align-items-center gap-3">
+        <a class="link-body-emphasis" href="{% url 'glossario:lista_termos' %}">Dicionário</a>
+        <a class="link-body-emphasis" href="/#sobre">Sobre</a>
+      </div>
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

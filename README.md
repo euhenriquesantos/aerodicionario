@@ -30,7 +30,7 @@ Testes do Express:
 npm test
 ```
 
-## Executando o projeto Django
+## Executando o projeto Django (Local)
 
 Crie um ambiente virtual (recomendado) e instale as dependências:
 
@@ -59,6 +59,52 @@ Testes do Django (nenhum teste ainda, mas o comando verifica a configuração):
 ```bash
 python manage.py test
 ```
+
+## Produção — Guia rápido
+
+1) Variáveis de ambiente
+
+- Copie `.env.example` para `.env` e ajuste:
+  - `SECRET_KEY` (valor forte/único)
+  - `DEBUG=False`
+  - `ALLOWED_HOSTS` e `CSRF_TRUSTED_ORIGINS`
+  - `DATABASE_URL` (recomendado Postgres)
+
+2) Requisitos
+
+- Python 3.11+ e Postgres (com extensão `pg_trgm`; nossa migration cria quando permitido)
+- Servidor de aplicação (gunicorn/uvicorn) atrás de Nginx/Proxy
+
+3) Build estáticos + migrações
+
+```bash
+python manage.py collectstatic --noinput
+python manage.py migrate
+```
+
+4) Servindo a aplicação
+
+```bash
+gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3
+# ou (ASGI)
+uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --workers 3
+```
+
+5) Arquivos estáticos e mídia
+
+- Em produção, use S3/CloudFront (django-storages) ou Nginx com cache e gzip/br.
+- Configure Cache-Control e headers de segurança no proxy/CDN.
+
+6) Segurança
+
+- HSTS, CSP, Referrer-Policy, X-Content-Type-Options no proxy
+- `SECRET_KEY` seguro e `DEBUG=False`
+- Rate-limit em `/api/autocomplete/` e POST `/sugerir/` (já incluído)
+
+7) Observabilidade
+
+- Sentry (erros) e Uptime para healthcheck.
+
 
 ## Dicas para VS Code
 

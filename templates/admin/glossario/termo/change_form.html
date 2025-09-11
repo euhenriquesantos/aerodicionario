@@ -1,0 +1,46 @@
+{% extends "admin/change_form.html" %}
+{% load i18n diffs admin_urls %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+  {% if original %}
+    <li><a href="{% url 'admin:glossario_termo_revert_last' original.pk %}" class="deletelink">Reverter para último histórico</a></li>
+  {% endif %}
+{% endblock %}
+
+{% block after_related_objects %}
+  {{ block.super }}
+  {% if original %}
+    <div class="module" style="margin-top:16px;border-radius:12px;padding:12px 16px;">
+      <h2 class="h5">Diff rápido (último histórico → atual)</h2>
+      {% with hist=original.historico.all|first %}
+        {% if hist %}
+        <table class="table" style="width:100%;">
+          <thead><tr><th>Campo</th><th>Diferença</th></tr></thead>
+          <tbody>
+            <tr><td>Título</td><td>{{ hist.previous_titulo|diff_html:original.titulo }}</td></tr>
+            <tr><td>EN</td><td>{{ hist.previous_decod_en|diff_html:original.decod_en }}</td></tr>
+            <tr><td>PT</td><td>{{ hist.previous_decod_pt|diff_html:original.decod_pt }}</td></tr>
+            <tr><td>Resumo</td><td>{{ hist.previous_explicacao|diff_html:original.explicacao }}</td></tr>
+          </tbody>
+        </table>
+        {% else %}
+          <p class="help">Ainda não há histórico para este termo.</p>
+        {% endif %}
+      {% endwith %}
+    </div>
+    <div class="module" style="margin-top:16px;border-radius:12px;padding:12px 16px;">
+      <h2 class="h5">Histórico (10 mais recentes)</h2>
+      <ul>
+      {% for h in original.historico.all|slice:":10" %}
+        <li>
+          {{ h.created_at|date:'d/m/Y H:i' }} — por {{ h.changed_by|default:'—' }}
+          <a class="button" href="{% url 'admin:glossario_termo_revert_to' original.pk h.pk %}">Reverter para este</a>
+        </li>
+      {% empty %}
+        <li class="text-muted">Sem histórico.</li>
+      {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}

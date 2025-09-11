@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+  <div class="module">
+    <h2>{% trans "Importar termos de CSV" %}</h2>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <p>Selecione um arquivo <code>.csv</code> com o cabeçalho contendo ao menos a coluna <strong>"SIGLA OU PALAVRA"</strong>. Colunas opcionais: "DECODIFICAÇÃO EM INGLÊS", "DECODIFICAÇÃO EM PORTUGUÊS", "EXPLICAÇÃO", "VÍDEOS", "LINKS".</p>
+      <fieldset class="module aligned">
+        <div class="form-row">
+          {{ form.arquivo.errors }}
+          <label for="id_arquivo">Arquivo CSV:</label>
+          {{ form.arquivo }}
+        </div>
+      </fieldset>
+      <div class="submit-row">
+        <input type="submit" class="default" value="Importar">
+        <a href="{% url 'admin:glossario_termo_changelist' %}" class="button cancel-link">Cancelar</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

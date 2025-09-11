@@ -1,50 +1,141 @@
 {% extends 'base.html' %}
 {% block title %}{{ termo.titulo }} - Aerodicionário{% endblock %}
+{% load images %}
+{% block og_title %}{{ termo.titulo }} - Aerodicionário{% endblock %}
+{% block og_description %}{{ termo.explicacao|default:termo.decod_pt|default:termo.decod_en|truncatewords:28 }}{% endblock %}
+{% block extra_head %}
+  {% if termo.imagens.first %}
+    <meta property="og:image" content="{{ termo.imagens.first.imagem.url }}">
+  {% endif %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    "name": "{{ termo.titulo|escapejs }}",
+    {% if termo.sinonimos.all %}
+    "alternateName": [{% for s in termo.sinonimos.all %}"{{ s.nome|escapejs }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+    {% endif %}
+    "description": "{{ termo.explicacao|default:termo.decod_pt|default:termo.decod_en|truncatewords:30|escapejs }}",
+    "url": "{{ request.build_absolute_uri }}"
+  }
+  </script>
+{% endblock %}
 {% block content %}
-<article class="mb-4">
-  <h1 class="mb-3">{{ termo.titulo }}</h1>
-  <div class="mb-3">
-    {% if termo.decod_en %}<p><strong>Decodificação (EN):</strong> {{ termo.decod_en }}</p>{% endif %}
-    {% if termo.decod_pt %}<p><strong>Decodificação (PT):</strong> {{ termo.decod_pt }}</p>{% endif %}
-  </div>
-  {% if termo.explicacao %}
-  <p class="lead">{{ termo.explicacao }}</p>
-  {% endif %}
-  {% if termo.fotos %}
-  <div id="fotosCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for foto in termo.fotos %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <img src="{{ foto }}" class="d-block w-100 img-fluid" alt="Foto {{ forloop.counter }}">
+<div class="container-xxl px-0">
+  <section class="mb-4 p-4 p-md-5 search-hero">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <div>
+        <h1 class="display-6 mb-2">{{ termo.titulo }}</h1>
+        <div class="d-flex flex-wrap gap-2">
+          {% if termo.decod_en %}<span class="badge badge-soft">EN: {{ termo.decod_en }}</span>{% endif %}
+          {% if termo.decod_pt %}<span class="badge badge-soft">PT: {{ termo.decod_pt }}</span>{% endif %}
+        </div>
+        <div class="subnav mt-3 d-flex gap-2">
+          <a href="#resumo">Explicação</a>
+          <a href="#imagens">Imagens</a>
+          <a href="#videos">Vídeos</a>
+          <a href="#referencias">Referências</a>
+        </div>
       </div>
-      {% endfor %}
+      <div class="text-md-end">
+        <a class="btn btn-outline-primary me-2" href="{% url 'glossario:lista_termos' %}">Voltar ao dicionário</a>
+        <a class="btn btn-primary" href="{% url 'glossario:sugerir_para_termo' termo.slug %}?change_type=correction&justification=Proponho%20ajuste%2Fcomplemento%20por%20motivo%20X">Sugerir complemento</a>
+      </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#fotosCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#fotosCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Próximo</span>
-    </button>
-  </div>
-  {% endif %}
-  {% if termo.videos %}
-  <div class="mb-4">
-    {% for video in termo.videos %}
-    <div class="ratio ratio-16x9 mb-3">
-      <iframe src="{{ video }}" allowfullscreen></iframe>
+  </section>
+
+  <article class="card mb-4">
+    <div class="card-body">
+      {% if termo.explicacao %}
+        <h2 id="resumo" class="section-title h5">Explicação</h2>
+        <p class="lead lead-wide">{{ termo.explicacao }}</p>
+      {% endif %}
+
+      {% with imagens=termo.imagens.all %}
+      {% if imagens %}
+      <h2 id="imagens" class="section-title h5 mt-4">Imagens</h2>
+      <div id="fotosCarousel" class="carousel slide mb-3 media-embed" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for img in imagens %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ img.imagem.url }}" 
+                 srcset="{% image_srcset img.imagem %}"
+                 sizes="(max-width: 768px) 100vw, 960px"
+                 loading="lazy"
+                 class="d-block w-100 img-fluid" alt="{{ img.alt_text|default:'Imagem' }}" title="{{ img.title }}">
+            {% if img.caption %}
+            <div class="carousel-caption d-none d-md-block">
+              <p>{{ img.caption }}</p>
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#fotosCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#fotosCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Próximo</span>
+        </button>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      {% with videos=termo.videos.all %}
+      {% if videos %}
+        <h2 id="videos" class="section-title h5 mt-4">Vídeos</h2>
+        <div class="mb-4">
+          {% for v in videos %}
+          <div class="ratio ratio-16x9 mb-3 media-embed">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/{{ v.youtube_id }}?rel=0&modestbranding=1"
+              title="Vídeo do YouTube"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+          <div class="mb-4">
+            <a class="link-primary" href="https://youtu.be/{{ v.youtube_id }}" target="_blank" rel="noopener">Abrir no YouTube ↗︎</a>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% endwith %}
+
+      {% with refs=termo.links_relacionados.all %}
+      {% if refs %}
+      <h2 id="referencias" class="h5 mt-4">Referências</h2>
+      <ul class="list-group mb-3">
+        {% for ref in refs %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{{ ref.url }}" target="_blank" rel="noopener">{{ ref.rotulo|default:ref.url }}</a>
+          <span aria-hidden="true">↗︎</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
+      <div class="d-flex gap-2">
+        <a href="{% url 'glossario:lista_termos' %}" class="btn btn-outline-primary">Voltar</a>
+        <a href="{% url 'glossario:lista_termos' %}?q={{ termo.titulo|urlencode }}" class="btn btn-primary">Ver termos relacionados</a>
+      </div>
     </div>
-    {% endfor %}
-  </div>
+  </article>
+  {% if relacionados %}
+  <section class="card mb-4">
+    <div class="card-body">
+      <h2 class="h5">Relacionados</h2>
+      <ul class="list-inline mb-0">
+        {% for r in relacionados %}
+          <li class="list-inline-item mb-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'glossario:detalhes_termo' r.slug %}">{{ r.titulo }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
   {% endif %}
-  {% if termo.links %}
-  <ul class="list-group mb-4">
-    {% for link in termo.links %}
-    <li class="list-group-item"><a href="{{ link }}" target="_blank" rel="noopener">{{ link }}</a></li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  <a href="{% url 'glossario:lista_termos' %}" class="btn btn-secondary">Voltar</a>
-</article>
+</div>
+
 {% endblock %}

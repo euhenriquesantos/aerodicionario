@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block search %}
+  <div class="changelist-search">
+    {{ block.super }}
+    <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+      <a class="button" href="?">Todos</a>
+      <a class="button" href="?approver__isnull=">Com aprovador</a>
+      <a class="button" href="?approver__isnull=True">Sem aprovador</a>
+    </div>
+  </div>
+{% endblock %}
+

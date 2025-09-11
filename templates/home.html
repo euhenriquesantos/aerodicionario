@@ -3,13 +3,28 @@
 {% block title %}Aerodicionário - Glossário de Termos de Aviação{% endblock %}
 {% block meta_description %}Dicionário da aviação com definições de siglas e termos aeronáuticos em português. Descubra rapidamente significados e amplie seu vocabulário aéreo.{% endblock %}
 {% block content %}
-<section class="py-5 text-center bg-light">
+<section class="py-5">
   <div class="container">
-    <h1 class="display-4 fw-bold">Seu guia de termos e siglas da aviação</h1>
-    <p class="lead">Da cabine de comando ao solo, descubra a linguagem que move o céu.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'glossario:lista_termos' %}">Consultar Dicionário</a>
+    <div class="p-4 p-md-5 search-hero">
+      <div class="text-center">
+        <h1 class="display-5 display-hero mb-3">
+          Seu guia de <span class="text-gradient">termos e siglas da aviação</span>
+        </h1>
+        <p class="lead mb-4">Da cabine de comando ao solo, descubra a linguagem que move o céu.</p>
+        <form method="get" action="{% url 'glossario:lista_termos' %}" class="mx-auto" style="max-width: 680px;">
+          <div class="input-group search-lg w-100">
+            <input type="text" name="q" class="form-control" placeholder="Buscar termos (ex.: IFR, NOTAM, APU)">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+          </div>
+        </form>
+        <div class="mt-4">
+          <a class="btn btn-primary btn-lg" href="{% url 'glossario:lista_termos' %}">Consultar Dicionário</a>
+          <a class="btn btn-outline-primary btn-lg ms-2" href="#sobre">Saiba mais</a>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
+  </section>
 
 <section id="sobre" class="py-5">
   <div class="container">
@@ -26,24 +41,24 @@
   </div>
 </section>
 
-<section id="recursos" class="py-5 bg-light">
+<section id="recursos" class="py-5">
   <div class="container">
-    <h2 class="text-center mb-4">Por que usar o Aerodicionário?</h2>
+    <h2 class="text-center mb-4 display-6">Por que usar o Aerodicionário?</h2>
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="h-100 p-4 border rounded">
+        <div class="card h-100 p-4">
           <h3 class="h5">Conteúdo atualizado</h3>
           <p>Mantemos nosso banco de dados em constante expansão com os termos mais recentes do setor.</p>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="h-100 p-4 border rounded">
+        <div class="card h-100 p-4">
           <h3 class="h5">Busca rápida</h3>
           <p>Encontre qualquer expressão em segundos usando a pesquisa do dicionário.</p>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="h-100 p-4 border rounded">
+        <div class="card h-100 p-4">
           <h3 class="h5">Acesso gratuito</h3>
           <p>Consulte o conteúdo de onde estiver sem custos.</p>
         </div>
@@ -52,10 +67,4 @@
   </div>
 </section>
 
-<section id="contato" class="py-5">
-  <div class="container text-center">
-    <h2>Entre em contato</h2>
-    <p>Tem alguma sugestão ou correção? Envie um e-mail para <a href="mailto:contato@aerodicionario.example">contato@aerodicionario.example</a>.</p>
-  </div>
-</section>
 {% endblock %}

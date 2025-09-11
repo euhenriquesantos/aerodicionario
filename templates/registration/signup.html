@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Cadastrar - Aerodicionário{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="h4 mb-3">Criar conta</h1>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+              <div class="mb-3">{{ field.label_tag }} {{ field }}</div>
+            {% endfor %}
+            <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
+          </form>
+          <p class="mt-3 mb-0">Já tem conta? <a href="{% url 'login' %}">Entrar</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

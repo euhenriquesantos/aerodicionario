@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load i18n dashboard_stats static %}
+{% block bodyclass %}admin-dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-cards">
+  <div class="dash-card">
+    <div class="dash-card-title">Termos</div>
+    <div class="dash-card-value">{% termos_count %}</div>
+    <a class="dash-link" href="{% url 'admin:glossario_termo_changelist' %}">Gerenciar termos →</a>
+  </div>
+  <div class="dash-card">
+    <div class="dash-card-title">Sugestões pendentes</div>
+    <div class="dash-card-value text-warning">{% sugestoes_pendentes_count %}</div>
+    <a class="dash-link" href="{% url 'admin:glossario_suggestion_changelist' %}?status__exact=pending">Ver pendentes →</a>
+  </div>
+  <div class="dash-card">
+    <div class="dash-card-title">Sugestões aprovadas</div>
+    <div class="dash-card-value text-success">{% sugestoes_aprovadas_count %}</div>
+    <a class="dash-link" href="{% url 'admin:glossario_suggestion_changelist' %}?status__exact=approved">Ver aprovadas →</a>
+  </div>
+  <div class="dash-card">
+    <div class="dash-card-title">Sugestões rejeitadas</div>
+    <div class="dash-card-value text-danger">{% sugestoes_rejeitadas_count %}</div>
+    <a class="dash-link" href="{% url 'admin:glossario_suggestion_changelist' %}?status__exact=rejected">Ver rejeitadas →</a>
+  </div>
+  <div class="dash-card">
+    <div class="dash-card-title">Configurações do site</div>
+    <a class="dash-link" href="{% url 'admin:glossario_sitesetting_changelist' %}">Abrir configurações →</a>
+  </div>
+</div>
+
+<div class="module" style="padding: 12px 16px; margin-top: 12px; border-radius: 12px;">
+  <form method="get" action="{% url 'admin:glossario_termo_changelist' %}">
+    <label for="q">Buscar termos</label>
+    <input type="text" id="q" name="q" placeholder="Digite para buscar" style="margin-right:8px;">
+    <button type="submit" class="button">Buscar</button>
+    <a class="button" href="{% url 'admin:glossario_suggestion_moderar' %}" style="margin-left:8px;">Moderar sugestões</a>
+  </form>
+  <p class="help">Use a busca rápida ou vá direto para a moderação.</p>
+  <hr>
+</div>
+
+<div class="module" style="padding: 12px 16px; margin-top: 12px; border-radius: 12px;">
+  <h2 class="h5">Últimas aplicações de sugestões</h2>
+  {% latest_application_logs 5 as logs %}
+  {% if logs %}
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Termo</th>
+            <th>Por</th>
+            <th>Campos</th>
+            <th>Midias</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td>{{ log.created_at|date:'d/m/Y H:i' }}</td>
+            <td><a href="{% url 'admin:glossario_termo_change' log.termo.id %}">{{ log.termo.titulo }}</a></td>
+            <td>{{ log.approver|default:'—' }}</td>
+            <td>{{ log.fields_changed|join:', ' }}</td>
+            <td>{{ log.media_added }} img · {{ log.links_added }} link · {{ log.videos_added }} vídeo</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="text-muted">Ainda sem histórico de aplicações.</p>
+    {% endif %}
+</div>
+
+{# Removemos o conteúdo padrão do Django para um dashboard 100% customizado #}
+{% endblock %}
