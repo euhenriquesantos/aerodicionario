@@ -4,9 +4,6 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
-from django.views.decorators.vary import vary_on_headers
 
 from .models import Termo, TermoSinonimo, SiteSetting
 from .serializers import TermoSerializer
@@ -26,7 +23,6 @@ def home(request):
     return render(request, "home.html")
 
 
-@cache_page(60 * 2)
 def lista_termos(request):
     busca = request.GET.get("q", "").strip()
     letra = request.GET.get("letra", "").upper().strip()
@@ -66,7 +62,6 @@ def lista_termos(request):
     return render(request, "glossario/lista.html", context)
 
 
-@cache_page(60 * 5)
 def detalhes_termo(request, slug):
     termo = get_object_or_404(Termo, slug=slug)
     relacionados = Termo.objects.filter(titulo__istartswith=termo.titulo[:1]).exclude(pk=termo.pk)[:6]
@@ -80,12 +75,15 @@ def sugerir(request, slug=None):
         termo = get_object_or_404(Termo, slug=slug)
     # rate limit simples para POST
     if request.method == "POST":
+        if not SiteSetting.get_solo().suggestions_enabled:
+            messages.error(request, "As sugestões estão temporariamente desativadas.")
+            return redirect("glossario:lista_termos")
         ip = request.META.get("REMOTE_ADDR", "")
         key = f"sug_rl:{ip}"
         if cache.get(key):
             messages.error(request, "Você está enviando sugestões muito rápido. Tente novamente em instantes.")
             return redirect("glossario:sugerir" if not termo else "glossario:sugerir_para_termo", slug=termo.slug if termo else None)
-        cache.set(key, True, 5)
+        cache.set(key, True, SiteSetting.get_solo().suggestion_rate_limit_seconds or 5)
         form = SuggestionForm(request.POST, request.FILES)
         if form.is_valid():
             suggestion: Suggestion = form.save(commit=False)
@@ -225,11 +223,13 @@ class TermoDetailAPI(generics.RetrieveAPIView):
 class AutocompleteAPI(APIView):
     def get(self, request):
         q = (request.GET.get("q") or "").strip()
-        # rate limit simples por IP+q
-        key = f"ac_rl:{request.META.get('REMOTE_ADDR')}:{q.lower()}"
+        # rate limit simples por IP+q usando configuração
+        throttle_ms = SiteSetting.get_solo().autocomplete_throttle_ms or 1000
+        ttl = max(1, int(throttle_ms / 1000))
+        key = f"ac_rl:{request.META.get('REMOTE_ADDR')}:{q.lower()}:{ttl}"
         if cache.get(key):
             return Response({"results": []})
-        cache.set(key, True, 1)
+        cache.set(key, True, ttl)
         items = []
         if q:
             base = (

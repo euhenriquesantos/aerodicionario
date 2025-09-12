@@ -339,6 +339,18 @@ class SiteSetting(models.Model):
     suggestion_max_image_mb = models.PositiveIntegerField(default=6)
     suggestion_rate_limit_seconds = models.PositiveIntegerField(default=5)
 
+    # Landing page dinâmicas
+    hero_image = models.ImageField(upload_to=settings_upload_to, blank=True)
+    cta_primary_text = models.CharField(max_length=40, blank=True, default="Consultar Dicionário")
+    cta_primary_url = models.URLField(blank=True, default="/dicionario/")
+    cta_secondary_text = models.CharField(max_length=40, blank=True, default="Saiba mais")
+    cta_secondary_url = models.URLField(blank=True, default="#sobre")
+    show_about = models.BooleanField(default=True)
+    about_title = models.CharField(max_length=120, blank=True, default="Sobre o Aerodicionário")
+    about_html = models.TextField(blank=True, default="<p>O Aerodicionário reúne definições claras e objetivas para estudantes, entusiastas e profissionais do setor aéreo.</p>")
+    show_features = models.BooleanField(default=True)
+    features_html = models.TextField(blank=True, default="<ul><li>Conteúdo atualizado</li><li>Busca rápida</li><li>Acesso gratuito</li></ul>")
+
     class Meta:
         verbose_name = "Configurações do site"
         verbose_name_plural = "Configurações do site"

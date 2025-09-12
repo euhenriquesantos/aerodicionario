@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site_settings.site_name|default:'Aerodicionário' }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ site_settings.default_meta_description|default:'Glossário de termos e siglas da aviação para estudantes e profissionais do setor aéreo.' }}{% endblock %}">
+  {% if site_settings.meta_keywords %}<meta name="keywords" content="{{ site_settings.meta_keywords }}">{% endif %}
   <meta name="keywords" content="aviação, dicionário, glossário, termos aeronáuticos, siglas aéreas">
   <meta name="robots" content="{% if site_settings.enable_indexing %}index, follow{% else %}noindex, nofollow{% endif %}">
   <meta property="og:title" content="{% block og_title %}{{ site_settings.site_name|default:'Aerodicionário' }}{% endblock %}">
@@ -105,10 +106,14 @@
   </main>
   <footer class="site-footer mt-auto">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 py-4">
-      <small class="text-body-secondary">&copy; {{ now|date:'Y' }} Aerodicionário</small>
-      <div class="d-flex align-items-center gap-3">
+      <small class="text-body-secondary">&copy; {{ now|date:'Y' }} {{ site_settings.site_name|default:'Aerodicionário' }}{% if site_settings.footer_text %} — {{ site_settings.footer_text }}{% endif %}</small>
+      <div class="d-flex align-items-center gap-3 flex-wrap">
         <a class="link-body-emphasis" href="{% url 'glossario:lista_termos' %}">Dicionário</a>
         <a class="link-body-emphasis" href="/#sobre">Sobre</a>
+        {% if site_settings.social_twitter %}<a class="link-body-emphasis" href="{{ site_settings.social_twitter }}" target="_blank" rel="noopener">Twitter</a>{% endif %}
+        {% if site_settings.social_instagram %}<a class="link-body-emphasis" href="{{ site_settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+        {% if site_settings.social_youtube %}<a class="link-body-emphasis" href="{{ site_settings.social_youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
+        {% if site_settings.social_linkedin %}<a class="link-body-emphasis" href="{{ site_settings.social_linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
       </div>
     </div>
   </footer>
