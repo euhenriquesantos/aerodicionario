@@ -4,66 +4,112 @@
 {% block meta_description %}Dicionário da aviação com definições de siglas e termos aeronáuticos em português. Descubra rapidamente significados e amplie seu vocabulário aéreo.{% endblock %}
 {% block content %}
 <section class="py-5">
-  <div class="container">
-    <div class="p-4 p-md-5 lp-hero">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-7 text-center text-lg-start">
-          <h1 class="display-5 display-hero mb-3">{{ site_settings.hero_title|default:'Seu guia de termos e siglas da aviação' }}</h1>
-          <p class="lead mb-4">{{ site_settings.hero_subtitle|default:'Da cabine de comando ao solo, descubra a linguagem que move o céu.' }}</p>
-          <form method="get" action="{% url 'glossario:lista_termos' %}" class="mx-auto" style="max-width: 680px;">
-            <div class="input-group search-lg w-100">
-              <input type="text" name="q" class="form-control" placeholder="Buscar termos (ex.: IFR, NOTAM, APU)">
-              <button class="btn btn-primary btn-glow" type="submit">Buscar</button>
+  <div class="p-4 p-md-5 lp-hero">
+    <div class="row justify-content-center align-items-center g-4">
+      <div class="col-12 col-lg-8 text-center">
+        <div class="hero-eyebrow mb-2">{{ site_settings.hero_eyebrow|default:'AERODICIONÁRIO' }}</div>
+        <h1 class="display-5 display-hero mb-3">{{ site_settings.hero_title|default:'O dicionário da aviação em português' }}</h1>
+        <p class="lead mb-3 lead-wide mx-auto">{{ site_settings.hero_subtitle|default:'Busque siglas, termos e jargões com definições claras, exemplos e traduções.' }}</p>
+        <div class="hero-badges mb-3 d-flex justify-content-center">
+          {% if site_settings.hero_badge_text %}<span class="badge badge-soft">{{ site_settings.hero_badge_text }}</span>{% endif %}
+        </div>
+        <form method="get" action="{% url 'glossario:lista_termos' %}" class="mx-auto" style="max-width: 760px;">
+          <div class="row g-2 align-items-stretch">
+            <div class="col-12 col-lg-8">
+              <label for="home-search" class="visually-hidden">Buscar termos</label>
+              <input id="home-search" type="text" name="q" class="form-control form-control-lg rounded-3" placeholder="{{ site_settings.search_placeholder|default:'Buscar termos (ex.: IFR, NOTAM, APU)' }}" aria-label="Buscar termos do dicionário">
             </div>
-          </form>
-          <div class="mt-4">
-            <a class="btn btn-primary btn-lg btn-glow" href="{{ site_settings.cta_primary_url|default:'/dicionario/' }}">{{ site_settings.cta_primary_text|default:'Consultar Dicionário' }}</a>
-            <a class="btn btn-outline-primary btn-lg ms-2" href="{{ site_settings.cta_secondary_url|default:'#sobre' }}">{{ site_settings.cta_secondary_text|default:'Saiba mais' }}</a>
+            <div class="col-12 col-lg-4 d-grid">
+              <button class="btn btn-primary btn-lg btn-glow" type="submit"><i class="bi bi-search me-1" aria-hidden="true"></i> Buscar</button>
+            </div>
           </div>
-        </div>
-        <div class="col-lg-5 text-center">
-          {% if site_settings.hero_image %}
-            <img src="{{ site_settings.hero_image.url }}" alt="" class="img-fluid">
-          {% endif %}
-        </div>
+        </form>
+        
+        {% if site_settings.hero_image %}
+          <div class="mt-4">
+            <img src="{{ site_settings.hero_image.url }}" alt="{{ site_settings.hero_image_alt|default:site_settings.hero_title|default:'Imagem de destaque' }}" class="img-fluid" style="max-height:280px; object-fit:contain;">
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
   </section>
 
-{% if site_settings.show_about %}
-<section id="sobre" class="py-5">
-  <div class="container">
-    <h2>{{ site_settings.about_title|default:'Sobre o Aerodicionário' }}</h2>
-    <div class="content">{{ site_settings.about_html|safe }}</div>
-  </div>
-</section>
-{% endif %}
-
 {% if site_settings.show_features %}
 <section id="recursos" class="py-5">
   <div class="container">
-    <h2 class="text-center mb-4 display-6">Por que usar o Aerodicionário?</h2>
-    {% if site_settings.features_html %}
-      <div class="content text-center">{{ site_settings.features_html|safe }}</div>
-    {% else %}
-      <div class="lp-grid">
+    <h2 class="mb-4">{{ site_settings.features_title|default:'Por que usar o Aerodicionário?' }}</h2>
+    <div class="lp-grid">
         <div class="lp-card p-4">
-          <div class="lp-icon mb-2">✓</div>
+          <div class="lp-icon mb-2"><i class="bi bi-speedometer2" aria-hidden="true"></i></div>
           <h3 class="h5">Conteúdo atualizado</h3>
           <p class="mb-0">Banco de termos sempre em expansão com novidades do setor.</p>
         </div>
         <div class="lp-card p-4">
-          <div class="lp-icon mb-2">🔎</div>
+          <div class="lp-icon mb-2"><i class="bi bi-search" aria-hidden="true"></i></div>
           <h3 class="h5">Busca rápida</h3>
           <p class="mb-0">Encontre qualquer expressão em segundos pelo autocomplete.</p>
         </div>
         <div class="lp-card p-4">
-          <div class="lp-icon mb-2">💡</div>
-          <h3 class="h5">Gratuito</h3>
+          <div class="lp-icon mb-2"><i class="bi bi-bookmark-check" aria-hidden="true"></i></div>
+          <h3 class="h5">Acesso gratuito</h3>
           <p class="mb-0">Acesse de onde estiver sem custo, de forma simples e objetiva.</p>
         </div>
       </div>
+  </div>
+</section>
+{% endif %}
+
+{% if site_settings.show_how %}
+<section id="como-funciona" class="py-5">
+  <div class="container">
+    <h2 class="mb-4">{{ site_settings.how_title|default:'Como funciona' }}</h2>
+    {% if site_settings.how_html %}
+      <div class="content lead-wide">{{ site_settings.how_html|safe }}</div>
+    {% else %}
+    <div class="lp-grid">
+      <div class="lp-card p-4">
+        <div class="lp-icon mb-2"><i class="bi bi-type" aria-hidden="true"></i></div>
+        <h3 class="h6 text-uppercase text-muted mb-1">1. Busque</h3>
+        <p class="mb-0">Digite siglas ou termos (ex.: IFR, METAR, APU) na barra de busca.</p>
+      </div>
+      <div class="lp-card p-4">
+        <div class="lp-icon mb-2"><i class="bi bi-card-text" aria-hidden="true"></i></div>
+        <h3 class="h6 text-uppercase text-muted mb-1">2. Entenda</h3>
+        <p class="mb-0">Acesse definições curtas, traduções e exemplos quando disponíveis.</p>
+      </div>
+      <div class="lp-card p-4">
+        <div class="lp-icon mb-2"><i class="bi bi-send-check" aria-hidden="true"></i></div>
+        <h3 class="h6 text-uppercase text-muted mb-1">3. Colabore</h3>
+        <p class="mb-0">Sugira correções e novos verbetes para manter o glossário sempre atualizado.</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% if site_settings.show_faq %}
+<section id="faq" class="py-5">
+  <div class="container">
+    <h2 class="mb-4">{{ site_settings.faq_title|default:'Perguntas frequentes' }}</h2>
+    {% if site_settings.faq_html %}
+      <div class="content lead-wide">{{ site_settings.faq_html|safe }}</div>
+    {% else %}
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="lp-card p-4">
+          <h3 class="h6 mb-2">O conteúdo é gratuito?</h3>
+          <p class="mb-0">Sim. O acesso é livre e pensado para consulta rápida no dia a dia.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="lp-card p-4">
+          <h3 class="h6 mb-2">Posso sugerir novos termos?</h3>
+          <p class="mb-0">Pode! Use a opção “Sugerir termo” para enviar contribuições e correções.</p>
+        </div>
+      </div>
+    </div>
     {% endif %}
   </div>
 </section>

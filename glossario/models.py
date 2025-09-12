@@ -321,6 +321,10 @@ class SiteSetting(models.Model):
     analytics_code = models.TextField(blank=True, help_text="Cole aqui scripts de analytics (ex.: gtag).")
     hero_title = models.CharField(max_length=200, blank=True, default="Seu guia de termos e siglas da aviação")
     hero_subtitle = models.CharField(max_length=240, blank=True, default="Da cabine de comando ao solo, descubra a linguagem que move o céu.")
+    hero_eyebrow = models.CharField(max_length=80, blank=True, default="AERODICIONÁRIO",
+                                    help_text="Texto pequeno acima do título da home")
+    hero_badge_text = models.CharField(max_length=140, blank=True, default="Simples, rápido e 100% gratuito.")
+    search_placeholder = models.CharField(max_length=160, blank=True, default="Buscar termos (ex.: IFR, NOTAM, APU)")
     items_per_page = models.PositiveIntegerField(default=12)
     enable_autocomplete = models.BooleanField(default=True)
     autocomplete_throttle_ms = models.PositiveIntegerField(default=1000)
@@ -341,6 +345,7 @@ class SiteSetting(models.Model):
 
     # Landing page dinâmicas
     hero_image = models.ImageField(upload_to=settings_upload_to, blank=True)
+    hero_image_alt = models.CharField(max_length=150, blank=True, default="Imagem de destaque")
     cta_primary_text = models.CharField(max_length=40, blank=True, default="Consultar Dicionário")
     cta_primary_url = models.URLField(blank=True, default="/dicionario/")
     cta_secondary_text = models.CharField(max_length=40, blank=True, default="Saiba mais")
@@ -349,7 +354,14 @@ class SiteSetting(models.Model):
     about_title = models.CharField(max_length=120, blank=True, default="Sobre o Aerodicionário")
     about_html = models.TextField(blank=True, default="<p>O Aerodicionário reúne definições claras e objetivas para estudantes, entusiastas e profissionais do setor aéreo.</p>")
     show_features = models.BooleanField(default=True)
+    features_title = models.CharField(max_length=120, blank=True, default="Por que usar o Aerodicionário?")
     features_html = models.TextField(blank=True, default="<ul><li>Conteúdo atualizado</li><li>Busca rápida</li><li>Acesso gratuito</li></ul>")
+    show_how = models.BooleanField(default=True, help_text="Exibir seção 'Como funciona'")
+    how_title = models.CharField(max_length=120, blank=True, default="Como funciona")
+    how_html = models.TextField(blank=True)
+    show_faq = models.BooleanField(default=True, help_text="Exibir seção de FAQ")
+    faq_title = models.CharField(max_length=120, blank=True, default="Perguntas frequentes")
+    faq_html = models.TextField(blank=True)
 
     class Meta:
         verbose_name = "Configurações do site"

@@ -653,12 +653,12 @@ class SiteSettingAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Identidade", {"fields": ("site_name", "site_logo", "favicon", "primary_color", "secondary_color")}),
         ("SEO padrão", {"fields": ("default_meta_description", "meta_keywords", "meta_title_suffix", "default_og_image", "enable_indexing", "robots_txt")}),
-        ("Homepage", {"fields": ("hero_title", "hero_subtitle")}),
+        ("Homepage", {"fields": ("hero_eyebrow", "hero_title", "hero_subtitle", "hero_badge_text", "search_placeholder")}),
         ("Busca e listagem", {"fields": ("items_per_page", "enable_autocomplete", "autocomplete_throttle_ms")}),
         ("Sugestões", {"fields": ("suggestions_enabled", "suggestions_require_source", "suggestions_min_justification", "suggestion_max_image_mb", "suggestion_rate_limit_seconds")}),
         ("Social", {"fields": ("social_twitter", "social_instagram", "social_youtube", "social_linkedin")}),
         ("Rodapé", {"fields": ("footer_text",)}),
-        ("Landing page", {"fields": ("hero_image", "cta_primary_text", "cta_primary_url", "cta_secondary_text", "cta_secondary_url", "show_about", "about_title", "about_html", "show_features", "features_html")}),
+        ("Landing page", {"fields": ("hero_image", "hero_image_alt", "cta_primary_text", "cta_primary_url", "cta_secondary_text", "cta_secondary_url", "show_about", "about_title", "about_html", "show_features", "features_title", "features_html", "show_how", "how_title", "how_html", "show_faq", "faq_title", "faq_html")}),
         ("Personalização avançada", {"classes": ("collapse",), "fields": ("custom_css", "custom_js_head", "custom_js_body", "analytics_code")}),
     )
 
